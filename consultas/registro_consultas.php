@@ -1,29 +1,3 @@
-<?php
-include("../connection/connection.php");
-
-$con = connection();
-
-$sql = "SELECT * FROM usuario";
-$query = mysqli_query($con, $sql);
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
- 
-    if (isset($_POST['id_Usuario']) && isset($_POST['contrasena']) && isset($_POST['tipo_Usuario'])) {
-
-        $id_Usuario = $_POST['id_Usuario'];
-        $contrasena = $_POST['contrasena'];
-        $tipo_Usuario = $_POST['tipo_Usuario'];
-
-        $sql = "INSERT INTO usuario VALUES('$id_Usuario', '$contrasena', '$tipo_Usuario')";
-        $query = mysqli_query($con, $sql);
-
-        if ($query) {
-            Header("Location: registro_usuarios.php");
-        }
-    } else {
-        echo "No se enviaron todos los datos necesarios.";
-    }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,8 +13,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="users-form">
         <form action="" method="POST">
-            <h1>Crear Usuario</h1>
-            <input class="myInput" type="number" name="id_Usuario" placeholder="Id del usuario" required>
+            <h1>Crear Consultas</h1>
+            <input class="myInput" type="number" name="id" placeholder="Id de la consulta" required>
             <input type="password" name="contrasena" placeholder="Contrasena" required>
             <input class="myInput" type="text" name="tipo_Usuario" placeholder="tipo de usuario" required>
             <input type="submit" value="Registrar">
@@ -48,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <div>
-        <h2>Usuarios Registrados</h2>
+        <h2>Consultas Registradas</h2>
         <table class="user-table">
             <thead>
                 <tr>

@@ -1,12 +1,11 @@
 <?php
 
-
 function connection(){
     $host = "localhost";
     $user = "root";
     $password = "";
 
-    $bd = "clinica9";
+    $bd = "clinica";
 
     $connect = mysqli_connect($host, $user, $password);
 
@@ -14,6 +13,5 @@ function connection(){
 
     return $connect;
 }
-
 
 ?>
