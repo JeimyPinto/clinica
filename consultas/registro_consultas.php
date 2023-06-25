@@ -1,4 +1,28 @@
+<?php
+include("connection.php");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $con = connection();
+
+    if (isset($_POST['idusuario']) && isset($_POST['contrasena']) && isset($_POST['tipo_usuario'])) {
+
+        $idusuario = $_POST['idusuario'];
+        $contrasena = $_POST['contrasena'];
+        $tipo_usuario = $_POST['tipo_usuario'];
+
+        $sql = "INSERT INTO usuario VALUES('$idusuario', '$contrasena', '$tipo_usuario')";
+        $query = mysqli_query($con, $sql);
+
+        if ($query) {
+            Header("Location: welcome.php");
+        }
+    } else {
+        echo "No se enviaron todos los datos necesarios.";
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,16 +57,26 @@
             </thead>
             <tbody>
                 <?php
-                while ($row = mysqli_fetch_array($query)) :
-                ?>
+                while ($row = mysqli_fetch_array($query)):
+                    ?>
                     <tr>
-                        <th><?= $row['id_Usuario'] ?></th>
-                        <th><?= $row['contrasena'] ?></th>
-                        <th><?= $row['tipo_Usuario'] ?></th>
-                        <th><a href="../usuarios/editar_usuarios.php?id_Usuario=<?= $row['id_Usuario'] ?>" class="users-table--edit">Editar</a></th>
-                        <th><a href="../usuarios/eliminar_usuarios.php?id_Usuario=<?= $row['id_Usuario'] ?>" class="users-table--delete" onclick="return confirm('¿Estás seguro de que quieres eliminar este usuario?')">Eliminar</a></th>
+                        <th>
+                            <?= $row['id_Usuario'] ?>
+                        </th>
+                        <th>
+                            <?= $row['contrasena'] ?>
+                        </th>
+                        <th>
+                            <?= $row['tipo_Usuario'] ?>
+                        </th>
+                        <th><a href="../usuarios/editar_usuarios.php?id_Usuario=<?= $row['id_Usuario'] ?>"
+                                class="users-table--edit">Editar</a></th>
+                        <th><a href="../usuarios/eliminar_usuarios.php?id_Usuario=<?= $row['id_Usuario'] ?>"
+                                class="users-table--delete"
+                                onclick="return confirm('¿Estás seguro de que quieres eliminar este usuario?')">Eliminar</a>
+                        </th>
                     </tr>
-                <?php
+                    <?php
                 endwhile;
                 ?>
             </tbody>
