@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $ocupada = $_POST['ocupada'];
 
 
-        $sql_insert = "INSERT INTO habitaciones VALUES($id, $numero, '$tipo',$piso,$ocupada)";
+        $sql_insert = "INSERT INTO habitaciones (id, numero, tipo, piso, ocupada) VALUES (?, ?, ?, ?, ?)";
         $stmt_insert = mysqli_prepare($con, $sql_insert);
 
         if ($stmt_insert) {
@@ -32,8 +32,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Error al insertar los datos en la base de datos: " . mysqli_error($con);
             }
             mysqli_stmt_close($stmt_insert);
+        } else {
+            echo "Error en la preparación de la consulta: " . mysqli_error($con);
         }
     }
+
 }
 ?>
 
@@ -45,11 +48,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Habitaciones</title>
-    <link rel="stylesheet" href="../CSS/styleWelcome.css">
+    <link rel="stylesheet" href="../CSS/estilos.css">
 </head>
 
 <body>
-    <div class="users-form">
+    <div class="form_container">
         <form action="" method="POST">
             <h1>Crear Habitación</h1>
             <input class="myInput" type="number" name="id" placeholder="Id de la habitación" required>
@@ -64,9 +67,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
     </div>
 
-    <div>
+    <div class="form_group">
         <h2>Habitaciones Registradas</h2>
-        <table class="user-table">
+        <table>
             <thead>
                 <tr>
                     <th>Id</th>
@@ -78,24 +81,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </thead>
             <tbody>
                 <?php
-                while ($row = mysqli_fetch_array($query)) :
-                ?>
+                while ($row = mysqli_fetch_array($query)):
+                    ?>
                     <tr>
-                        <th><?= $row['id'] ?></th>
-                        <th><?= $row['numero'] ?></th>
-                        <th><?= $row['tipo'] ?></th>
-                        <th><?= $row['piso'] ?></th>
-                        <th><?= $row['ocupada'] ?></th>
-                        <th><a href="../usuarios/editar_usuarios.php?id_Usuario=<?= $row['id_Usuario'] ?>" class="users-table--edit">Editar</a></th>
-                        <th><a href="../usuarios/eliminar_usuarios.php?id_Usuario=<?= $row['id_Usuario'] ?>" class="users-table--delete" onclick="return confirm('¿Estás seguro de que quieres eliminar este usuario?')">Eliminar</a></th>
+                        <th>
+                            <?= $row['id'] ?>
+                        </th>
+                        <th>
+                            <?= $row['numero'] ?>
+                        </th>
+                        <th>
+                            <?= $row['tipo'] ?>
+                        </th>
+                        <th>
+                            <?= $row['piso'] ?>
+                        </th>
+                        <th>
+                            <?= ($row['ocupada'] == 0) ? 'Disponible' : 'No disponible' ?>
+                        </th>
+                        <th><a href="editar_habitaciones.php?id=<?= $row['id'] ?>" class="form_link">Editar</a></th>
+                        <th><a href="eliminar_habitaciones.php?id=<?= $row['id'] ?>" class="form_link"
+                                onclick="return confirm('¿Estás seguro de que quieres eliminar esta habitación?')">Eliminar</a>
+                        </th>
                     </tr>
-                <?php
+                    <?php
                 endwhile;
                 ?>
             </tbody>
         </table>
         <br><br><br>
-        <a href="../menu.php" class="users-table--edit">Volver al Menu</a>
+        <a href="../menu.php" class="form_link">Volver al Menu</a>
     </div>
 </body>
 

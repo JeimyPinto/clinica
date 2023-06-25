@@ -1,9 +1,11 @@
 <?php
-include("connection.php");
+include("../connection/connection.php");
+$con = connection();
+$sql = "SELECT * FROM consultas";
+$query = mysqli_query($con, $sql);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $con = connection();
 
     if (isset($_POST['idusuario']) && isset($_POST['contrasena']) && isset($_POST['tipo_usuario'])) {
 
@@ -30,12 +32,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Usuarios</title>
-    <link rel="stylesheet" href="../CSS/styleWelcome.css">
+    <title>Consultas</title>
+    <link rel="stylesheet" href="../css/estilos.css">
 </head>
 
 <body>
-    <div class="users-form">
+    <div class="form_container">
         <form action="" method="POST">
             <h1>Crear Consultas</h1>
             <input class="myInput" type="number" name="id" placeholder="Id de la consulta" required>
@@ -45,14 +47,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
     </div>
 
-    <div>
+    <div class="form_group">
         <h2>Consultas Registradas</h2>
-        <table class="user-table">
+        <table>
             <thead>
                 <tr>
-                    <th>Id del usuario</th>
-                    <th>Contraseña</th>
-                    <th>Tipo de usuario</th>
+                    <th>Id</th>
+                    <th>Id del paciente</th>
+                    <th>Id del médico</th>
+                    <th>Fecha de consulta</th>
+                    <th>Duración (min)</th>
                 </tr>
             </thead>
             <tbody>
@@ -61,17 +65,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     ?>
                     <tr>
                         <th>
-                            <?= $row['id_Usuario'] ?>
+                            <?= $row['id'] ?>
                         </th>
                         <th>
-                            <?= $row['contrasena'] ?>
+                            <?= $row['pacientesID'] ?>
                         </th>
                         <th>
-                            <?= $row['tipo_Usuario'] ?>
+                            <?= $row['medicosID'] ?>
                         </th>
-                        <th><a href="../usuarios/editar_usuarios.php?id_Usuario=<?= $row['id_Usuario'] ?>"
+                        <th>
+                            <?= $row['fechaConsulta'] ?>
+                        </th>
+                        <th>
+                            <?= $row['duracionMinutos'] ?>
+                        </th>
+                        <th><a href="../consultas/editar_consultas.php?id=<?= $row['id_Usuario'] ?>"
                                 class="users-table--edit">Editar</a></th>
-                        <th><a href="../usuarios/eliminar_usuarios.php?id_Usuario=<?= $row['id_Usuario'] ?>"
+                        <th><a href="../consultas/eliminar_consultas.php?id=<?= $row['id_Usuario'] ?>"
                                 class="users-table--delete"
                                 onclick="return confirm('¿Estás seguro de que quieres eliminar este usuario?')">Eliminar</a>
                         </th>

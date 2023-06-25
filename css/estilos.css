@@ -16,10 +16,11 @@ body{
 .form{
 	background-color:#FFF;
 	margin:auto;
-	width:100%;
-	padding: 5em 3em;
+	width:90%;
+	max-width:1000px;
+	padding: 4.5em 3em;
 	border-radius: 10px;
-	box-shadow: 1 5px 10px -5px rgb(0 0 0/ 30%);
+	box-shadow: 0 5px 10px -5px rgb(0 0 0/ 30%);
 	text-align:center;
 	}
 	

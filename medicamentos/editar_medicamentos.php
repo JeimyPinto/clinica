@@ -3,10 +3,10 @@ include("../connection/connection.php");
 
 $con = connection();
 
-$id = $_GET['id'] ?? '';
+$id = $_GET['id'];
 
 // Obtener los datos de la habitación específica
-$sql_select = "SELECT * FROM habitaciones WHERE id = ?";
+$sql_select = "SELECT * FROM medicamentos WHERE id = ?";
 $stmt_select = mysqli_prepare($con, $sql_select);
 if ($stmt_select) {
     mysqli_stmt_bind_param($stmt_select, "i", $id);
@@ -16,33 +16,28 @@ if ($stmt_select) {
 
     if ($row) {
         // Datos de la habitación
-        $numero = $row['numero'];
-        $tipo = $row['tipo'];
-        $piso = $row['piso'];
-        $ocupada = $row['ocupada'];
+        $nombre = $row['nombre'];
+        $descripcion = $row['descripcion'];
+        $existencias = $row['existencias'];
+        $precio = $row['precio'];
 
         // Verificar si se ha enviado el formulario de edición
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Obtener los datos actualizados del formulario
-            $numero_actualizado = $_POST['numero'];
-            $tipo_actualizado = $_POST['tipo'];
-            $piso_actualizado = $_POST['piso'];
-            $ocupada_actualizado = $_POST['ocupada'];
-
-            // Convertir la opción del select a 0 o 1
-            $ocupada_actualizado = ($ocupada_actualizado == "Disponible") ? 0 : 1;
-
+            $nombre_actualizado = $_POST['nombre'];
+            $descripcion_actualizado = $_POST['descripcion'];
+            $existencias_actualizado = $_POST['existencias'];
+            $precio_actualizado = $_POST['precio'];
             // Actualizar los datos en la base de datos
-            $sql_update = "UPDATE habitaciones SET numero = ?, tipo = ?, piso = ?, ocupada = ? WHERE id = ?";
+            $sql_update = "UPDATE medicamentos SET nombre = ?, descripcion = ?, existencias = ?, precio = ? WHERE id = ?";
             $stmt_update = mysqli_prepare($con, $sql_update);
             if ($stmt_update) {
-                mysqli_stmt_bind_param($stmt_update, "issii", $numero_actualizado, $tipo_actualizado, $piso_actualizado, $ocupada_actualizado, $id);
+                mysqli_stmt_bind_param($stmt_update, "sssii", $nombre_actualizado, $descripcion_actualizado, $existencias_actualizado, $precio_actualizado, $id);
                 $result_update = mysqli_stmt_execute($stmt_update);
 
                 if ($result_update) {
                     echo "Los datos se han actualizado correctamente en la base de datos.";
-                    // Redireccionar a registro_habitaciones.php
-                    header("Location: registro_habitaciones.php");
+                    header("Location: registro_medicamentos.php");
                     exit();
                 } else {
                     echo "Error al actualizar los datos en la base de datos: " . mysqli_error($con);
@@ -51,7 +46,7 @@ if ($stmt_select) {
             }
         }
     } else {
-        echo "No se encontró una habitación con el ID especificado.";
+        echo "No se encontró un medicamento con el ID especificado.";
     }
     mysqli_stmt_close($stmt_select);
 } else {
@@ -73,17 +68,16 @@ if ($stmt_select) {
 <body>
     <div class="form_container form_group">
         <form action="" method="POST" class="form">
-            <h1>Editar Habitación</h1>
+            <h1>Editar Medicamento</h1>
             <input type="text" class="form_input" name="id" placeholder="ID" value="<?= $id ?>" disabled>
-            <input type="number" class="form_input" name="numero" placeholder="Número" value="<?= $numero ?>" required>
-            <input type="text" class="form_input" name="tipo" placeholder="Tipo" value="<?= $tipo ?>" required>
-            <input type="number" class="form_input" name="piso" placeholder="Piso" value="<?= $piso ?>" required>
-            <select name="ocupada" class="form_input" required>
-                <option value="Disponible" <?= ($ocupada == 0) ? 'selected' : '' ?>>Disponible</option>
-                <option value="No disponible" <?= ($ocupada == 1) ? 'selected' : '' ?>>No disponible</option>
-            </select>
+            <input type="text" class="form_input" name="nombre" placeholder="Nombre" value="<?= $nombre ?>" required>
+            <input type="text" class="form_input" name="descripcion" placeholder="Descripción"
+                value="<?= $descripcion ?>" required>
+            <input type="number" class="form_input" name="existencias" placeholder="Existencias"
+                value="<?= $existencias ?>" required>
+            <input type="decimal" class="form_input" name="precio" placeholder="Precio" value="<?= $precio ?>" required>
             <input type="submit" class="form_submit" value="Guardar cambios">
-            <a href="registro_habitaciones.php" class="form_link">Volver</a>
+            <a href="registro_medicamentos.php" class="form_link">Volver</a>
         </form>
     </div>
 </body>
