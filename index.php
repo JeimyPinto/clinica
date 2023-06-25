@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <form class="form" action="" method="post">
         <h2 class="form_title">Iniciar Sesión</h2>
         <p class="form_paragraph">
-            ¿Aún no tienes una cuenta? <a href="#" class="form_link">Regístrate aquí</a>
+            ¿Aún no tienes una cuenta? <a href="usuarios/registro_usuarios.php" class="form_link">Regístrate aquí</a>
         </p>
         <div class="form_container">
             <div class="form_group">

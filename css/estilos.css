@@ -7,6 +7,7 @@
 body{
 	font-family: 'Roboto', sans-serif;
 	background-color: #e5e5f7;
+	width:100%;
 	opacity: 0.8;
 	background-image:  radial-gradient(#d17cf9 0.5px, transparent 0.5px), radial-gradient(#d17cf9 0.5px, #e5e5f7 0.5px);
 	display:flex;
@@ -15,11 +16,10 @@ body{
 .form{
 	background-color:#FFF;
 	margin:auto;
-	width:90%;
-	max-width:400px;
-	padding: 4.5em 3em;
+	width:100%;
+	padding: 5em 3em;
 	border-radius: 10px;
-	box-shadow: 0 5px 10px -5px rgb(0 0 0/ 30%);
+	box-shadow: 1 5px 10px -5px rgb(0 0 0/ 30%);
 	text-align:center;
 	}
 	

@@ -36,18 +36,18 @@ if (isset($_POST['Actualizar'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar usuarios</title>
-    <link rel="stylesheet" href="../CSS/styleWelcome.css">
+    <link rel="stylesheet" href="../CSS/estilos.css">
 </head>
 
 <body>
-    <div class="users-form">
-        <form action="" method="POST">
+    <div class="form_container,form_group">
+        <form action="" method="POST" class="form">
             <h1>Editar Usuario</h1>
-            <input type="text" name="id_Usuario" placeholder="Nombre" value="<?= $id_Usuario ?>" disabled>
-            <input type="text" name="contrasena" placeholder="Contraseña" value="<?= $contrasena ?>">
-            <input class="myInput" type="text" name="tipo_Usuario" placeholder="Tipo de usuario" value="<?= $tipo_Usuario ?>">
-            <input type="submit" value="Actualizar" name="Actualizar">
-            <a href="registro_usuarios.php" class="users-table--edit">Volver</a>
+            <input type="text" class="form_input" name="id_Usuario" placeholder="Nombre" value="<?= $id_Usuario ?>" disabled>
+            <input type="text" class="form_input" name="contrasena" placeholder="Contraseña" value="<?= $contrasena ?>">
+            <input type="text" class="form_input" name="tipo_Usuario" placeholder="Tipo de usuario" value="<?= $tipo_Usuario ?>">
+            <input type="submit" class="form_submit" value="Actualizar" name="Actualizar">
+            <a href="registro_usuarios.php" class="form_link">Volver</a>
         </form>
     </div>
 </body>

@@ -33,23 +33,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usuarios</title>
-    <link rel="stylesheet" href="../CSS/styleWelcome.css">
+    <link rel="stylesheet" href="../css/estilos.css">
 </head>
 
 <body>
-    <div class="users-form">
-        <form action="" method="POST">
-            <h1>Crear Usuario</h1>
-            <input class="myInput" type="number" name="id_Usuario" placeholder="Id del usuario" required>
-            <input type="password" name="contrasena" placeholder="Contrasena" required>
-            <input class="myInput" type="text" name="tipo_Usuario" placeholder="tipo de usuario" required>
-            <input type="submit" value="Registrar">
+    <div class="form_group">
+        <form action="" method="POST" class="form">
+            <h1 class="form_title">Crear Usuario</h1>
+            <input class="form_input" type="number" name="id_Usuario" placeholder="Id del usuario" required>
+            <input class="form_input" type="password" name="contrasena" placeholder="Contrasena" required>
+            <input class="form_input" type="text" name="tipo_Usuario" placeholder="tipo de usuario" required>
+            <input class="form_submit" type="submit" value="Registrar">
         </form>
     </div>
 
     <div>
-        <h2>Usuarios Registrados</h2>
-        <table class="user-table">
+        <h2 class="form_title">Usuarios Registrados</h2>
+        <table class="form_group">
             <thead>
                 <tr>
                     <th>Id del usuario</th>
@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </tbody>
         </table>
         <br><br><br>
-        <a href="../menu.php" class="users-table--edit">Volver al Menu</a>
+        <a href="../menu.php" class="form_link">Volver al Menu</a>
     </div>
 </body>
 
