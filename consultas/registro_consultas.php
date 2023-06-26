@@ -3,6 +3,13 @@ include("../connection/connection.php");
 $con = connection();
 $sql = "SELECT * FROM consultas";
 $query = mysqli_query($con, $sql);
+// Obtener listado de pacientes
+$pacienteSql = "SELECT id, nombre FROM pacientes";
+$pacienteQuery = mysqli_query($con, $pacienteSql);
+$pacientes = array();
+while ($row = mysqli_fetch_assoc($pacienteQuery)) {
+    $pacientes[$row['id']] = $row['nombre'];
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -62,14 +69,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <tbody>
                 <?php
                 while ($row = mysqli_fetch_array($query)):
+                    $pacienteId = $row['pacienteID'];
+                    $nombrePaciente = isset($pacientes[$pacienteId]) ? $pacientes[$pacienteId] : 'Desconocido';
                     ?>
                     <tr>
                         <th>
                             <?= $row['id'] ?>
                         </th>
-                        <th>
-                            <?= $row['pacientesID'] ?>
-                        </th>
+                        <td>
+                            <?= $nombrePaciente ?>
+                        </td>
                         <th>
                             <?= $row['medicosID'] ?>
                         </th>
@@ -79,11 +88,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <th>
                             <?= $row['duracionMinutos'] ?>
                         </th>
-                        <th><a href="../consultas/editar_consultas.php?id=<?= $row['id_Usuario'] ?>"
-                                class="users-table--edit">Editar</a></th>
-                        <th><a href="../consultas/eliminar_consultas.php?id=<?= $row['id_Usuario'] ?>"
-                                class="users-table--delete"
-                                onclick="return confirm('¿Estás seguro de que quieres eliminar este usuario?')">Eliminar</a>
+                        <th><a href="editar_consultas.php?id=<?= $row['id'] ?>">Editar</a></th>
+                        <th><a href="eliminar_consultas.php?id=<?= $row['id'] ?>"
+                                onclick="return confirm('¿Estás seguro de que quieres eliminar esta consulta?')">Eliminar</a>
                         </th>
                     </tr>
                     <?php

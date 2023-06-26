@@ -5,20 +5,33 @@ $con = connection();
 
 $sql = "SELECT * FROM ingresos";
 $query = mysqli_query($con, $sql);
+
+// Obtener listado de pacientes
+$pacienteSql = "SELECT id, nombre FROM pacientes";
+$pacienteQuery = mysqli_query($con, $pacienteSql);
+$pacientes = array();
+while ($row = mysqli_fetch_assoc($pacienteQuery)) {
+    $pacientes[$row['id']] = $row['nombre'];
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['id']) && isset($_POST['pacienteID']) && isset($_POST['fechaIngreso']) && isset($_POST['diagnostico'])) {
+        $id = $_POST['id'];
+        $pacienteID = $_POST['pacienteID'];
+        $fechaIngreso = $_POST['fechaIngreso'];
+        $diagnostico = $_POST['diagnostico'];
 
-            } else {
-                echo "Error al insertar los datos en la base de datos: " . mysqli_error($con);
-            }
-            mysqli_stmt_close($stmt_insert);
-        } else {
-            echo "Error en la preparación de la consulta: " . mysqli_error($con);
+        $sql = "INSERT INTO ingresos VALUES('$id', '$pacienteID', '$fechaIngreso','$diagnostico')";
+        $query = mysqli_query($con, $sql);
+
+        if ($query) {
+            Header("Location: registro_ingresos.php");
         }
+    } else {
+        echo "No se enviaron todos los datos necesarios.";
     }
-
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,49 +44,59 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-    <div class="form_container">
-        <form action="" method="POST">
-            <h1>Crear Ingreso</h1>
-            <input type="number" name="id" placeholder="Id del Ingreso" required>
-            <input type="number" name="pacienteID" placeholder="Id del paciente" required>
-            <input type="text" name="fechaIngreso" placeholder="Fecha de ingreso" required>
-            <input type="number" name="diagnostico" placeholder="Diagnostico" required>
-            <input type="submit" value="Registrar">
+    <div class="form_group">
+        <form action="" method="POST" class="form">
+            <h1 class="form_title">Crear Ingreso</h1>
+            <input class="form_input" type="number" name="id" placeholder="Id del ingreso" required>
+
+            <select class="form_input" name="pacienteID" required>
+                <option value="" disabled selected>Seleccionar paciente</option>
+                <?php
+                foreach ($pacientes as $id => $nombre) {
+                    echo "<option value='$id'>$nombre</option>";
+                }
+                ?>
+            </select>
+            <label for="">Fecha de Ingreso</label>
+            <input class="form_input" type="date" name="fechaIngreso" placeholder="Fecha de ingreso" required>
+            <input class="form_input" type="text" name="diagnostico" placeholder="Diagnóstico" required>
+            <input class="form_submit" type="submit" value="Registrar">
         </form>
     </div>
 
-    <div class="form_group">
-        <h2>Ingresos Registrados</h2>
-        <table>
+    <div>
+        <h2 class="form_title">Ingresos Registrados</h2>
+        <table class="form_group">
             <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>Id del paciente</th>
-                    <th>Fecha de ingreso</th>
-                    <th>Diagnostico</th>
+                    <th>Id del Ingreso</th>
+                    <th>Paciente</th>
+                    <th>Fecha de Ingreso</th>
+                    <th>Diagnóstico</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                 while ($row = mysqli_fetch_array($query)):
+                    $pacienteId = $row['pacienteID'];
                     ?>
                     <tr>
-                        <th>
+                        <td>
                             <?= $row['id'] ?>
-                        </th>
-                        <th>
-                            <?= $row['pacienteID'] ?>
-                        </th>
-                        <th>
+                        </td>
+                        <td>
+                            <?= isset($pacientes[$pacienteId]) ? $pacientes[$pacienteId] : 'Desconocido' ?>
+                        </td>
+                        <td>
                             <?= $row['fechaIngreso'] ?>
-                        </th>
-                        <th>
+                        </td>
+                        <td>
                             <?= $row['diagnostico'] ?>
-                        </th>
-                        <th><a href="editar_ingresos.php?id=<?= $row['id'] ?>" class="form_link">Editar</a></th>
-                        <th><a href="eliminar_ingresos.php?id=<?= $row['id'] ?>" class="form_link"
+                        </td>
+                        <td><a href="editar_ingresos.php?id=<?= $row['id'] ?>">Editar</a></td>
+                        <td><a href="eliminar_ingresos.php?id=<?= $row['id'] ?>"
                                 onclick="return confirm('¿Estás seguro de que quieres eliminar este ingreso?')">Eliminar</a>
-                        </th>
+                        </td>
                     </tr>
                     <?php
                 endwhile;
@@ -81,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </tbody>
         </table>
         <br><br><br>
-        <a href="../menu.php" class="form_link">Volver al Menu</a>
+        <a href="../menu.php" class="form_link">Volver al Menú</a>
     </div>
 </body>
 
