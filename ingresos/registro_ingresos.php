@@ -7,26 +7,6 @@ $sql = "SELECT * FROM ingresos";
 $query = mysqli_query($con, $sql);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-
-    if (isset($_POST['id']) && isset($_POST['pacienteID']) && isset($_POST['fechaIngreso']) && isset($_POST['diagnostico'])) {
-
-        $id = $_POST['id'];
-        $pacienteID = $_POST['pacienteID'];
-        $fechaIngreso = $_POST['fechaIngreso'];
-        $diagnostico = $_POST['diagnostico'];
-
-
-        $sql_insert = "INSERT INTO ingresos (id, pacienteID, fechaIngreso, diagnostico) VALUES (?, ?, ?, ?, ?)";
-        $stmt_insert = mysqli_prepare($con, $sql_insert);
-
-        if ($stmt_insert) {
-            mysqli_stmt_bind_param($stmt_insert, "iids", $id, $pacienteID, $fechaIngreso, $diagnostico);
-            $result_insert = mysqli_stmt_execute($stmt_insert);
-
-            if ($result_insert) {
-                echo "Los datos se han insertado correctamente en la base de datos.";
-                header("Location: registro_ingresos.php");
-                exit();
             } else {
                 echo "Error al insertar los datos en la base de datos: " . mysqli_error($con);
             }
