@@ -3,27 +3,28 @@ include("../connection/connection.php");
 
 $con = connection();
 
-$sql = "SELECT * FROM medicos";
+$sql = "SELECT * FROM pacientes";
 $query = mysqli_query($con, $sql);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['id']) && isset($_POST['nombre']) && isset($_POST['especialidad']) && isset($_POST['telefono']) && isset($_POST['correo'])) {
+    if (isset($_POST['id']) && isset($_POST['nombre']) && isset($_POST['fechaNacimiento']) && isset($_POST['genero']) && isset($_POST['direccion']) && isset($_POST['telefono'])) {
         $id = $_POST['id'];
         $nombre = $_POST['nombre'];
-        $especialidad = $_POST['especialidad'];
+        $fechaNacimiento = $_POST['fechaNacimiento'];
+        $genero = $_POST['genero'];
+        $direccion = $_POST['direccion'];
         $telefono = $_POST['telefono'];
-        $correo = $_POST['correo'];
 
-        $sql_insert = "INSERT INTO medicos (id, nombre, especialidad, telefono, correo) VALUES (?, ?, ?, ?, ?)";
+        $sql_insert = "INSERT INTO pacientes (id, nombre, fechaNacimiento, genero, direccion,telefono) VALUES (?, ?, ?, ?, ?)";
         $stmt_insert = mysqli_prepare($con, $sql_insert);
 
         if ($stmt_insert) {
-            mysqli_stmt_bind_param($stmt_insert, "issss", $id, $nombre, $especialidad, $telefono, $correo);
+            mysqli_stmt_bind_param($stmt_insert, "isdsss", $id, $nombre, $fechaNacimiento, $genero, $direccion, $telefono);
             $result_insert = mysqli_stmt_execute($stmt_insert);
 
             if ($result_insert) {
                 echo "Los datos se han insertado correctamente en la base de datos.";
-                header("Location: registro_medicos.php");
+                header("Location: registro_pacientes.php");
                 exit();
             } else {
                 echo "Error al insertar los datos en la base de datos: " . mysqli_error($con);
@@ -43,33 +44,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Médicos</title>
+    <title>Pacientes</title>
     <link rel="stylesheet" href="../CSS/estilos.css">
 </head>
 
 <body>
     <div class="form_group">
         <form action="" method="POST">
-            <h1 class="form_title">Crear Médico</h1>
+            <h1 class="form_title">Crear Paciente</h1>
             <input class="form_input" type="number" name="id" placeholder="Id del médico" required>
             <input class="form_input" type="text" name="nombre" placeholder="Nombre" required>
-            <input class="form_input" type="text" name="especialidad" placeholder="Especialidad" required>
-            <input class="form_input" type="number" name="telefono" placeholder="Teléfono" required>
-            <input class="form_input" type="email" name="correo" placeholder="Correo" required>
+            <input class="form_input" type="date" name="fechaNacimiento" placeholder="Fecha de Nacimiento" required>
+            <input class="form_input" type="text" name="genero" placeholder="Género" required>
+            <input class="form_input" type="text" name="direccion" placeholder="Dirección" required>
+            <input class="form_input" type="text" name="telefono" placeholder="Teléfono" required>
             <input class="form_submit" type="submit" value="Registrar">
         </form>
     </div>
 
     <div class="form_group">
-        <h2>Médicos Registrados</h2>
+        <h2>Pacientes Registrados</h2>
         <table>
             <thead>
                 <tr>
                     <th>Id</th>
                     <th>Nombre</th>
-                    <th>Especialidad</th>
+                    <th>Fecha de Nacimiento</th>
+                    <th>Género</th>
+                    <th>Dirección</th>
                     <th>Teléfono</th>
-                    <th>Correo Electrónico</th>
                 </tr>
             </thead>
             <tbody>
@@ -84,17 +87,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <?= $row['nombre'] ?>
                         </th>
                         <th>
-                            <?= $row['especialidad'] ?>
+                            <?= $row['fechaNacimiento'] ?>
+                        </th>
+                        <th>
+                            <?= $row['genero'] ?>
+                        </th>
+                        <th>
+                            <?= $row['direccion'] ?>
                         </th>
                         <th>
                             <?= $row['telefono'] ?>
                         </th>
-                        <th>
-                            <?= $row['correo'] ?>
-                        </th>
-                        <th><a href="editar_medicos.php?id=<?= $row['id'] ?>" class="form_link">Editar</a></th>
-                        <th><a href="eliminar_medicos.php?id=<?= $row['id'] ?>" class="form_link"
-                                onclick="return confirm('¿Estás seguro de que quieres eliminar este médico?')">Eliminar</a>
+                        <th><a href="editar_pacientes.php?id=<?= $row['id'] ?>" class="form_link">Editar</a></th>
+                        <th><a href="eliminar_pacientes.php?id=<?= $row['id'] ?>" class="form_link"
+                                onclick="return confirm('¿Estás seguro de que quieres eliminar este paciente?')">Eliminar</a>
                         </th>
                     </tr>
                     <?php

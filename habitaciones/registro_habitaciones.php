@@ -52,18 +52,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-    <div class="form_container">
+    <div class="form_group">
         <form action="" method="POST">
-            <h1>Crear Habitación</h1>
-            <input class="myInput" type="number" name="id" placeholder="Id de la habitación" required>
-            <input type="number" name="numero" placeholder="Número" required>
-            <input type="text" name="tipo" placeholder="Tipo" required>
-            <input type="number" name="piso" placeholder="Piso" required>
-            <select name="ocupada" id="ocupada" required>
+            <h1 class="form_title">Crear Habitación</h1>
+            <input class="form_input" type="number" name="id" placeholder="Id de la habitación" required>
+            <input class="form_input" type="number" name="numero" placeholder="Número" required>
+            <input class="form_input" type="text" name="tipo" placeholder="Tipo" required>
+            <input class="form_input" type="number" name="piso" placeholder="Piso" required>
+            <select class="form_input" name="ocupada" id="ocupada" required>
                 <option value="0">Disponible</option>
                 <option value="1">No disponible</option>
             </select>
-            <input type="submit" value="Registrar">
+            <input class="form_submit" type="submit" value="Registrar">
         </form>
     </div>
 
